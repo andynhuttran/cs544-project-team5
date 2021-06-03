@@ -1,10 +1,10 @@
-package com.cs544.team5.project;
+package edu.cs544.team5;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Team5ProjectApplicationTests {
+class AppTests {
 
     @Test
     void contextLoads() {
