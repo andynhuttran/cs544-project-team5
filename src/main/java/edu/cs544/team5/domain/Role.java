@@ -3,8 +3,6 @@ package edu.cs544.team5.domain;
 import javax.persistence.*;
 
 
-
-
 @Entity
 public class Role {
 

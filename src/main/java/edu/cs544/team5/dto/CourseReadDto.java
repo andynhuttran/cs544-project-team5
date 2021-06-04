@@ -1,4 +1,4 @@
-package edu.cs544.team5.domain;
+package edu.cs544.team5.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +12,7 @@ import javax.persistence.SecondaryTable;
 @Entity
 @Setter
 @Getter
-public class Course {
+public class CourseReadDto {
     @Id
     private Integer id;
 
