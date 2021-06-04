@@ -5,7 +5,7 @@ spring:
     name: team5-project
   datasource:
     username: root
-    password:
+    password: justpass
     url: jdbc:mysql://localhost/team5?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
