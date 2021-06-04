@@ -14,11 +14,13 @@ import javax.persistence.SecondaryTable;
 @Getter
 public class Course {
     @Id
-    @Column(length = 5, nullable = false)
-    private String number;
+    private Integer id;
+
     private String name;
+
     @Column(length = 5)
     private String abbreviation;
+
     @Column(table="courseDescription", length=4000)
     private String description;
 }

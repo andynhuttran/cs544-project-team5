@@ -16,7 +16,8 @@ import java.time.LocalTime;
 public class Timeslot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+
     @NaturalId
     private String timeslotId;
     private String title;

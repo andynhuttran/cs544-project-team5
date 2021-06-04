@@ -1,8 +1,20 @@
 package edu.cs544.team5.domain;
 
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
-@Embeddable
-public enum Role {
-    ADMIN, STUDENT, FACULTY, PERSONNEL
+
+
+
+@Entity
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private RoleType type;
+
 }
+

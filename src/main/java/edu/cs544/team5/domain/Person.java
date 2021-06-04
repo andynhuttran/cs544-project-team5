@@ -17,6 +17,9 @@ public class Person {
     private String firstName;
     private String lastName;
     private String emailAddress;
-    @Enumerated
-    private Role role;
+
+
+    @ManyToMany
+    @JoinTable(name = "person_role")
+    private Set<Role> roles;
 }

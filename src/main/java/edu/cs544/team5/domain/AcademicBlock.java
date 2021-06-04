@@ -13,13 +13,17 @@ import java.time.LocalDate;
 @Getter
 public class AcademicBlock {
     @Id
-    private String id;
+    private Integer id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private LocalDate beginDate;
+
     @Column(nullable = false)
     private LocalDate endDate;
+
     @Column(nullable = false)
     private String semester;
 }
