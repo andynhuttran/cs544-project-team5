@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BarcodeRecord {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime attendance;
     @ManyToOne

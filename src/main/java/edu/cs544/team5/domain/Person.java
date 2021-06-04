@@ -17,6 +17,6 @@ public class Person {
     private String firstName;
     private String lastName;
     private String emailAddress;
-    @ElementCollection
-    private Set<Role> roles;
+    @Enumerated
+    private Role role;
 }
