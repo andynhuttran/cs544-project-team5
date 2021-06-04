@@ -13,12 +13,16 @@ import java.time.LocalDate;
 public class ClassSession {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+
     private LocalDate date;
+
     @ManyToOne
     private Timeslot timeslot;
+
     @ManyToOne
     private CourseOffering courseOffering;
+
     @ManyToOne
     private Location location;
 }

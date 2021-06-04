@@ -1,4 +1,4 @@
-package edu.cs544.team5.domain;
+package edu.cs544.team5.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
-public class AcademicBlock {
+public class AcademicBlockReadDto {
     @Id
     private Integer id;
 
