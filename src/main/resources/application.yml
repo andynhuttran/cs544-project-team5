@@ -8,6 +8,7 @@ spring:
     password: root
     url: jdbc:mysql://localhost/team5?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     show-sql: true
     hibernate:

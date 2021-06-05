@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
-@Entity
 @Setter
 @Getter
 public class AcademicBlockReadDto {

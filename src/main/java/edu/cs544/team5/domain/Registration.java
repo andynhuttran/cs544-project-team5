@@ -1,5 +1,6 @@
 package edu.cs544.team5.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,13 +11,18 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
+@EqualsAndHashCode
 public class Registration {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDate date;
+
     @ManyToOne
     private CourseOffering offering;
+
     @ManyToOne
     private Student student;
 }
