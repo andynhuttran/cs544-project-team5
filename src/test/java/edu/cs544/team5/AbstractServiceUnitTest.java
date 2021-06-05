@@ -1,7 +1,7 @@
 package edu.cs544.team5;
 
 import edu.cs544.team5.domain.Course;
-import edu.cs544.team5.service.CourseService;
+import edu.cs544.team5.service.AbstractService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,14 +13,14 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CourseServiceUnitTest {
+public class AbstractServiceUnitTest {
 
     @Autowired
-    private CourseService courseService;
+    private AbstractService abstractService;
 
     @Test
     public void whenApplicationStarts_thenHibernateCreatesInitialRecords() {
-        List<Course> courseList = courseService.findAll();
+        List<Course> courseList = abstractService.findAll();
         Assert.assertEquals(courseList.size(), 3);
     }
 }

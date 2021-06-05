@@ -4,10 +4,10 @@ spring:
   application:
     name: team5-project
   datasource:
-    username: root
-    password: root
-    url: jdbc:mysql://localhost/team5?createDatabaseIfNotExist=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: sa
+    password: Admin@mssql0!
+    url: jdbc:sqlserver://localhost;databaseName=team5;
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
     show-sql: true
     hibernate:
@@ -17,4 +17,4 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
