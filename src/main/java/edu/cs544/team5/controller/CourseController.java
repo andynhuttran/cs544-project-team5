@@ -27,22 +27,21 @@ public class CourseController {
     private ModelMapper modelMapper;
 
     @GetMapping("/")
-    public List<CourseReadDto> findAll(){
-        List<Course> courseList= courseService.findAll();
-        List<CourseReadDto> courseReadDtos =  courseList.stream()
+    public List<CourseReadDto> findAll() {
+        List<Course> courseList = courseService.findAll();
+        List<CourseReadDto> courseReadDtos = courseList.stream()
                 .map(course -> modelMapper.map(course, CourseReadDto.class))
                 .collect(Collectors.toList());
         return courseReadDtos;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseReadDto> find(@PathVariable("id") int id){
+    public ResponseEntity<CourseReadDto> find(@PathVariable("id") int id) {
         Course course = courseService.findById(id);
-        if(course == null){
+        if (course == null) {
             return ResponseEntity.notFound().build();
-        }
-       else{
-           CourseReadDto readDto = modelMapper.map(course, CourseReadDto.class);
+        } else {
+            CourseReadDto readDto = modelMapper.map(course, CourseReadDto.class);
             return ResponseEntity.ok(readDto);
         }
     }
@@ -58,4 +57,23 @@ public class CourseController {
 
         return ResponseEntity.created(uri).body(modelMapper.map(course, CourseReadDto.class));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CourseReadDto> update(@RequestBody Course course, @PathVariable int id) {
+        course.setId(id);
+        Course updatedCourse = courseService.update(course);
+
+        if (updatedCourse == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(modelMapper.map(updatedCourse, CourseReadDto.class));
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> delete(@PathVariable int id){
+        courseService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
