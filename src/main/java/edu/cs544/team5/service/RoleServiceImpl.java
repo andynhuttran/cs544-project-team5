@@ -5,10 +5,12 @@ import edu.cs544.team5.domain.RoleType;
 import edu.cs544.team5.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService{
 
     @Autowired

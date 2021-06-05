@@ -18,35 +18,16 @@ public class AppConfiguration {
     @Bean("studentMapping")
     public ModelMapper modelMapper(){
         ModelMapper modelMapper = new ModelMapper();
+
         modelMapper.getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)
                 .setSourceNamingConvention(NamingConventions.NONE)
                 .setDestinationNamingConvention(NamingConventions.NONE);
 
-        mappingStudent(modelMapper);
         return modelMapper;
     }
 
 
-    private void mappingStudent(ModelMapper modelMapper){
-        TypeMap<StudentCreationDto, Student> typeMap = modelMapper.createTypeMap(StudentCreationDto.class, Student.class);
-        typeMap.addMappings(mapper -> {
 
-            mapper.map(StudentCreationDto::getStudentId, Student::setStudentId);
-            mapper.map(StudentCreationDto::getFirstName, Student::setFirstName);
-            mapper.map(StudentCreationDto::getLastName, Student::setLastName);
-            mapper.map(StudentCreationDto::getEntryDate, Student::setEntryDate);
-        });
 
-        modelMapper.typeMap(Student.class, StudentReadDto.class).addMappings(mapper -> {
-            mapper.map(Student::getId, StudentReadDto::setId);
-            mapper.map(Student::getFirstName, StudentReadDto::setFirstName);
-            mapper.map(Student::getLastName, StudentReadDto::setLastName);
-
-            mapper.map(Student::getStudentId, StudentReadDto::setStudentId);
-            mapper.map(Student::getEntryDate, StudentReadDto::setEntryDate);
-            mapper.map(Student::getBarcode, StudentReadDto::setBarcode);
-        });
-
-    }
 }
