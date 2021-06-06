@@ -1,8 +1,10 @@
 package edu.cs544.team5.controller;
 
 import edu.cs544.team5.domain.Course;
+import edu.cs544.team5.domain.CourseOffering;
 import edu.cs544.team5.dto.CourseCreationDto;
 import edu.cs544.team5.dto.CourseReadDto;
+import edu.cs544.team5.service.AbstractService;
 import edu.cs544.team5.service.CourseServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
 public class CourseController {
 
     @Autowired
-    private CourseServiceImpl courseService;
+    private AbstractService<Course> courseService;
 
     @Autowired
     private ModelMapper modelMapper;

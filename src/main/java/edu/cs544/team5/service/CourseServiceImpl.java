@@ -20,7 +20,7 @@ public class CourseServiceImpl implements AbstractService<Course> {
     @Override
     @Transactional(readOnly = true)
     public Course findById(int id) {
-        return courseRepository.getById(id);
+        return courseRepository.existsById(id) ? courseRepository.getById(id) : null;
     }
 
     @Override
@@ -51,6 +51,7 @@ public class CourseServiceImpl implements AbstractService<Course> {
 
     @Override
     public void deleteById(int entityId) {
-        courseRepository.deleteById(entityId);
+        if(courseRepository.existsById(entityId))
+            courseRepository.deleteById(entityId);
     }
 }

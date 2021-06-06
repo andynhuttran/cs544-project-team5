@@ -14,12 +14,12 @@ public class CourseOfferingCreationDto {
     private int capacity;
 
     @NotNull
-    private CourseReadDto courseReadDto;
+    private int courseId;
 
     @NotNull
-    private FacultyReadDto facultyReadDto;
+    private int facultyId;
 
     @NotNull
-    private AcademicBlockReadDto block;
+    private int academicBlockId;
 
 }
