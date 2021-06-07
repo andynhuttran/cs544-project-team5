@@ -14,8 +14,8 @@ public class BarcodeRecordCreationDto {
     private LocalDateTime attendance;
 
     @NotNull
-    private StudentCreationDto studentCreationDto;
+    private StudentReadDto studentCreationDto;
 
     @NotNull
-    private ClassSessionCreationDto classSessionCreationDto;
+    private BarcodeRecordReadDto classSessionCreationDto;
 }

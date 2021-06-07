@@ -1,4 +1,4 @@
-package edu.cs544.team5.resources;
+package edu.cs544.team5.controller;
 
 import edu.cs544.team5.domain.BarcodeRecord;
 import edu.cs544.team5.domain.ClassSession;
