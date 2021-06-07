@@ -1,18 +1,38 @@
 package edu.cs544.team5.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@Data
-public class StudentReadDto extends PersonReadDto {
+@Setter
+@Getter
+public class StudentReadDto {
+
+    private int id;
+
+    private String firstName;
+
+    private String lastName;
+
     private String studentId;
-    private String visaStatus;
-    private String status;
-    private String track;
+
     private LocalDate entryDate;
+
     private String barcode;
 
-    private Collection<RegistrationReadDto> registrationReadDtos;
+    @Override
+    public String toString() {
+        return "StudentReadDto{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", studentId='" + studentId + '\'' +
+                ", entryDate=" + entryDate +
+                ", barcode='" + barcode + '\'' +
+                '}';
+    }
 }

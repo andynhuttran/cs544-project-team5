@@ -1,31 +1,24 @@
 package edu.cs544.team5.dto;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@Data
-public class StudentCreationDto extends PersonCreationDto {
+@Getter
+@Setter
+public class StudentCreationDto {
 
-    @NotNull
-    private String visaStatus;
+    private String firstName;
 
-    @NotNull
-    private String status;
+    private String lastName;
 
-    @NotNull
-    private String track;
+    private String studentId;
 
     @NotNull
     private LocalDate entryDate;
-
-    @NotNull
-
-    private String barcode;
-
-    @OneToMany(mappedBy = "student")
-    private Collection<RegistrationCreationDto> registrationCreationDtos;
 }
