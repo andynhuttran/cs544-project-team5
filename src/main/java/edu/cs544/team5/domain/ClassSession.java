@@ -6,19 +6,22 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-
 @Entity
 @Setter
 @Getter
 public class ClassSession {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private Integer id;
+
     private LocalDate date;
+
     @ManyToOne
     private Timeslot timeslot;
+
     @ManyToOne
     private CourseOffering courseOffering;
+
     @ManyToOne
     private Location location;
 }

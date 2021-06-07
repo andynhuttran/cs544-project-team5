@@ -11,12 +11,15 @@ import java.time.LocalDateTime;
 @Getter
 public class BarcodeRecord {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private Integer id;
+
     private LocalDateTime attendance;
+
     @ManyToOne
-    @JoinColumn(name = "barcode")
+    @JoinColumn(name = "studentId")
     private Student student;
+
     @ManyToOne
     private ClassSession classSession;
 }

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 public class Registration {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private LocalDate date;
     @ManyToOne

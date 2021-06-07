@@ -6,7 +6,6 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalTime;
 
@@ -15,8 +14,9 @@ import java.time.LocalTime;
 @Getter
 public class Timeslot {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private Integer id;
+
     @NaturalId
     private String timeslotId;
     private String title;

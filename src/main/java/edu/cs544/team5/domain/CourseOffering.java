@@ -12,20 +12,24 @@ import java.util.Collection;
 @Getter
 public class CourseOffering {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private String period;
     private LocalDate startDate;
     private int capacity;
+
     @ManyToOne
-    @JoinColumn(name = "courseNumber")
+    @JoinColumn(name = "courseId")
     private Course course;
+
     @ManyToOne
     @JoinColumn(name = "facultyId")
     private Faculty faculty;
+
     @ManyToOne
     @JoinColumn(name = "blockId")
     private AcademicBlock block;
+
     @OneToMany(mappedBy = "offering")
     private Collection<Registration> registrations;
 }

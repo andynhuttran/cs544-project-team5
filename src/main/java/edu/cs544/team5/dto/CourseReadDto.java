@@ -1,17 +1,19 @@
-package edu.cs544.team5.domain;
+package edu.cs544.team5.dto;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.SecondaryTable;
 
 @SecondaryTable(name = "courseDescription")
 @Entity
 @Setter
 @Getter
-public class Course {
+public class CourseReadDto {
     @Id
-    @GeneratedValue
     private Integer id;
 
     private String name;

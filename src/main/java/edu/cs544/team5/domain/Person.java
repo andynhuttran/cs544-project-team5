@@ -1,22 +1,49 @@
 package edu.cs544.team5.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
-@Entity
-@Inheritance(strategy= InheritanceType.JOINED)
 @Setter
 @Getter
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Id
+    @GeneratedValue
     private Integer id;
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
     private String emailAddress;
-    @Enumerated
-    private Role role;
+
+    @Setter(AccessLevel.NONE)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Collection<RoleType> roles = new ArrayList<>();
+
+    public Person(String firstName, String lastName, String emailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailAddress = emailAddress;
+    }
+
+    public void addRole(RoleType role) {
+        roles.add(role);
+    }
+
+    public void removeRole(RoleType role) {
+        roles.remove(role);
+    }
+
+    public Collection<RoleType> getRoles() {
+        return Collections.unmodifiableCollection(roles);
+    }
 }
