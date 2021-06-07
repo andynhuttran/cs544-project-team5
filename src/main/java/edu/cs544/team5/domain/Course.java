@@ -5,8 +5,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@SecondaryTable(name = "courseDescription")
 @Entity
+@SecondaryTable(name = "courseDescription")
 @Setter
 @Getter
 public class Course {
