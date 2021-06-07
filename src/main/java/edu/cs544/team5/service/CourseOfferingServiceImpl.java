@@ -1,6 +1,7 @@
 package edu.cs544.team5.service;
 
 import edu.cs544.team5.domain.CourseOffering;
+import edu.cs544.team5.domain.Faculty;
 import edu.cs544.team5.repository.CourseOfferingRepository;
 import edu.cs544.team5.repository.CourseRepository;
 import edu.cs544.team5.repository.FacultyRepository;
@@ -29,6 +30,11 @@ public class CourseOfferingServiceImpl implements AbstractService<CourseOffering
     @Transactional(readOnly = true)
     public List<CourseOffering> findAll() {
         return courseOfferingRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CourseOffering> findByFaculty(Faculty faculty){
+        return courseOfferingRepository.findCourseOfferingByFaculty(faculty);
     }
 
     @Override

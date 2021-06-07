@@ -18,9 +18,11 @@ public class AcademicBlock {
     private String name;
 
     @Column(nullable = false)
+    
     private LocalDate beginDate;
 
     @Column(nullable = false)
+    
     private LocalDate endDate;
 
     @Column(nullable = false)

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class CourseOfferingController {
 
     @Autowired
-    private AbstractService<CourseOffering> CourseOfferingService;
+    private CourseOfferingServiceImpl courseOfferingService;
 
     @Autowired
     private AbstractService<Course> courseService;
@@ -41,15 +41,29 @@ public class CourseOfferingController {
 
     @GetMapping("/")
     public List<CourseOfferingReadDto> findAll() {
-        List<CourseOffering> CourseOfferingList = CourseOfferingService.findAll();
+        List<CourseOffering> CourseOfferingList = courseOfferingService.findAll();
         return CourseOfferingList.stream()
                 .map(CourseOffering -> modelMapper.map(CourseOffering, CourseOfferingReadDto.class))
                 .collect(Collectors.toList());
     }
+    @GetMapping("/faculty/{id}")
+    public ResponseEntity<List<CourseOfferingReadDto>> findAllByFaculty(@PathVariable("id") int id) {
+        Faculty faculty = facultyService.findById(id);
+        if(faculty == null){
+            return ResponseEntity.notFound().build();
+        }
+        List<CourseOffering> byFaculty = courseOfferingService.findByFaculty(faculty);
+
+        List<CourseOfferingReadDto> courseOfferingReadDtoList = byFaculty.stream()
+                .map(CourseOffering -> modelMapper.map(CourseOffering, CourseOfferingReadDto.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(courseOfferingReadDtoList);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CourseOfferingReadDto> find(@PathVariable("id") int id) {
-        CourseOffering courseOffering = CourseOfferingService.findById(id);
+        CourseOffering courseOffering = courseOfferingService.findById(id);
         if (courseOffering == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -70,7 +84,7 @@ public class CourseOfferingController {
         AcademicBlock academicBlock = blockService.findById(newCourseOffering.getAcademicBlockId());
         courseOffering.setBlock(academicBlock);
 
-        courseOffering = CourseOfferingService.create(courseOffering);
+        courseOffering = courseOfferingService.create(courseOffering);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -83,7 +97,7 @@ public class CourseOfferingController {
     @PutMapping("/{id}")
     public ResponseEntity<CourseOfferingReadDto> update(@RequestBody CourseOffering CourseOffering, @PathVariable int id) {
         CourseOffering.setId(id);
-        CourseOffering updatedCourseOffering = CourseOfferingService.update(CourseOffering);
+        CourseOffering updatedCourseOffering = courseOfferingService.update(CourseOffering);
 
         if (updatedCourseOffering == null) {
             return ResponseEntity.notFound().build();
@@ -94,7 +108,7 @@ public class CourseOfferingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> delete(@PathVariable int id){
-        CourseOfferingService.deleteById(id);
+        courseOfferingService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
