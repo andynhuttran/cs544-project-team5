@@ -39,12 +39,7 @@ public class StudentServiceImpl implements StudentService {
     private RoleService roleService;
 
     @Autowired
-    @Qualifier("studentMapping")
     private ModelMapper modelMapper;
-
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @PostConstruct
     public void init(){
