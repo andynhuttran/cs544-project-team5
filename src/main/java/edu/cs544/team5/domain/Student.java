@@ -1,6 +1,8 @@
 package edu.cs544.team5.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -12,6 +14,8 @@ import java.util.Collection;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student extends Person {
     @Column(length = 11, nullable = false)
     private String studentId;

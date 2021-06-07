@@ -3,10 +3,7 @@ package edu.cs544.team5.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.SecondaryTable;
+import javax.persistence.*;
 
 @SecondaryTable(name = "courseDescription")
 @Entity
@@ -14,6 +11,7 @@ import javax.persistence.SecondaryTable;
 @Getter
 public class Course {
     @Id
+    @GeneratedValue
     private Integer id;
 
     private String name;

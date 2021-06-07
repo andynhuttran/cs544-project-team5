@@ -12,7 +12,7 @@ import java.util.Collection;
 @Getter
 public class CourseOffering {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private String period;
     private LocalDate startDate;
