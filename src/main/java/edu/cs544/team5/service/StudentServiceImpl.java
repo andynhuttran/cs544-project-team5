@@ -6,22 +6,18 @@ import edu.cs544.team5.domain.CourseOffering;
 import edu.cs544.team5.domain.Role;
 import edu.cs544.team5.domain.RoleType;
 import edu.cs544.team5.domain.Student;
-import edu.cs544.team5.dto.CourseReadDto;
 import edu.cs544.team5.dto.StudentCourseDto;
 import edu.cs544.team5.dto.StudentCreationDto;
 import edu.cs544.team5.dto.StudentReadDto;
 import edu.cs544.team5.repository.CourseOfferingRepository;
-import edu.cs544.team5.repository.RoleRepository;
 import edu.cs544.team5.repository.StudentRepository;
 import edu.cs544.team5.util.BarcodeFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
     private ModelMapper modelMapper;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         modelMapper.addConverter(new StudentDTOToEntityConvertor());
         modelMapper.addConverter(new CourseOfferingToStudentCourseDtoConvertor());
     }
@@ -83,11 +79,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    private List<StudentCourseDto> convertToStudentCourseDto(List<CourseOffering> courseOfferings){
+    private List<StudentCourseDto> convertToStudentCourseDto(List<CourseOffering> courseOfferings) {
         return courseOfferings.stream()
                 .map(courseOffering -> modelMapper.map(courseOffering, StudentCourseDto.class))
                 .collect(Collectors.toList());
     }
-
 
 }

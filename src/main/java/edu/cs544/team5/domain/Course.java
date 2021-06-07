@@ -1,6 +1,5 @@
 package edu.cs544.team5.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,10 +7,11 @@ import javax.persistence.*;
 
 @Entity
 @SecondaryTable(name = "courseDescription")
-@Data
+@Setter
+@Getter
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     private String name;
