@@ -8,13 +8,14 @@ spring:
     password: root
     url: jdbc:mysql://localhost/team5?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     show-sql: true
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

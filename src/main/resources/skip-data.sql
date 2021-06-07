@@ -1,0 +1,1 @@
+INSERT INTO role (id, type) VALUES (1, "ADMIN"), (2, "STUDENT"), (3, "FACULTY"), (4, "PERSONNEL");

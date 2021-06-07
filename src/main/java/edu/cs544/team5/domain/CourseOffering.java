@@ -18,18 +18,27 @@ public class CourseOffering {
     private LocalDate startDate;
     private int capacity;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "courseId")
     private Course course;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "facultyId")
     private Faculty faculty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "blockId")
     private AcademicBlock block;
 
-    @OneToMany(mappedBy = "offering")
+    @OneToMany(mappedBy = "offering", fetch = FetchType.LAZY)
     private Collection<Registration> registrations;
+
+    @Override
+    public String toString() {
+        return "CourseOffering{" +
+                "id=" + id +
+                ", period='" + period + '\'' +
+                ", startDate=" + startDate +
+                '}';
+    }
 }

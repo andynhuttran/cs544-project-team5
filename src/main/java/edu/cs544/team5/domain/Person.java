@@ -6,8 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -18,32 +19,25 @@ public class Person {
     @Id
     @GeneratedValue
     private Integer id;
-    @NotNull
+
     private String firstName;
-    @NotNull
+
     private String lastName;
-    @NotNull
-    private String emailAddress;
 
+    @ManyToMany
+    @JoinTable(name = "person_role")
     @Setter(AccessLevel.NONE)
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Collection<RoleType> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
-    public Person(String firstName, String lastName, String emailAddress) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.emailAddress = emailAddress;
-    }
-
-    public void addRole(RoleType role) {
+    public void addRole(Role role) {
         roles.add(role);
     }
 
-    public void removeRole(RoleType role) {
+    public void removeRole(Role role) {
         roles.remove(role);
     }
 
-    public Collection<RoleType> getRoles() {
-        return Collections.unmodifiableCollection(roles);
+    public Set<Role> getRoles() {
+        return Collections.unmodifiableSet(roles);
     }
 }

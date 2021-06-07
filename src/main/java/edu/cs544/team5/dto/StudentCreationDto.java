@@ -1,32 +1,24 @@
 package edu.cs544.team5.dto;
 
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@Data
-public class StudentCreationDto extends PersonCreationDto {
+@Getter
+@Setter
+public class StudentCreationDto {
+
+    private String firstName;
+
+    private String lastName;
+
+    private String studentId;
 
     @NotNull
-    private String visaStatus;
-
-    @NotNull
-    private String status;
-
-    @NotNull
-    private String track;
-
-    @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate entryDate;
-
-    @NotNull
-    private String barcode;
-
-    @OneToMany(mappedBy = "student")
-    private Collection<RegistrationCreationDto> registrationCreationDtos;
 }
