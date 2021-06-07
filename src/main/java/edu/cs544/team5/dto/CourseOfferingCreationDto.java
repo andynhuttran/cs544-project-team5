@@ -1,6 +1,7 @@
 package edu.cs544.team5.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -10,16 +11,17 @@ public class CourseOfferingCreationDto {
 
     @NotNull
     private String period;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
     private int capacity;
 
     @NotNull
-    private CourseReadDto courseReadDto;
+    private int courseId;
 
     @NotNull
-    private FacultyReadDto facultyReadDto;
+    private int facultyId;
 
     @NotNull
-    private AcademicBlockReadDto block;
+    private int academicBlockId;
 
 }

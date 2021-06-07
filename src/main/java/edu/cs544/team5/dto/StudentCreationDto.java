@@ -1,6 +1,7 @@
 package edu.cs544.team5.dto;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -20,10 +21,10 @@ public class StudentCreationDto extends PersonCreationDto {
     private String track;
 
     @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate entryDate;
 
     @NotNull
-
     private String barcode;
 
     @OneToMany(mappedBy = "student")

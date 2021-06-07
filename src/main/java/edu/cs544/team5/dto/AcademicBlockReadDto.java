@@ -1,5 +1,6 @@
 package edu.cs544.team5.dto;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
-@Entity
-@Setter
-@Getter
+@Data
 public class AcademicBlockReadDto {
     @Id
     private Integer id;
