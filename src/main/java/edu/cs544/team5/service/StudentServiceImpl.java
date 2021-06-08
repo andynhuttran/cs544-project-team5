@@ -9,6 +9,7 @@ import edu.cs544.team5.domain.Student;
 import edu.cs544.team5.dto.StudentCourseDto;
 import edu.cs544.team5.dto.StudentCreationDto;
 import edu.cs544.team5.dto.StudentReadDto;
+import edu.cs544.team5.exception.NoSuchElementFoundException;
 import edu.cs544.team5.repository.CourseOfferingRepository;
 import edu.cs544.team5.repository.StudentRepository;
 import edu.cs544.team5.util.BarcodeFactory;
@@ -57,6 +58,12 @@ public class StudentServiceImpl implements StudentService {
         //return dto
         StudentReadDto studentDTO = modelMapper.map(studentEntity, StudentReadDto.class);
         return studentDTO;
+    }
+
+    @Override
+    public StudentReadDto findById(Integer id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchElementFoundException("No student available by id=" + id));
+        return modelMapper.map(student, StudentReadDto.class);
     }
 
 
