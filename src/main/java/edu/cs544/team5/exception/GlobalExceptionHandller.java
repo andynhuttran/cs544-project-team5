@@ -21,9 +21,9 @@ public class GlobalExceptionHandller {
         return ResponseEntity.badRequest().body(errorApi);
     }
 
-    @ExceptionHandler(NoSuchElementFoundException.class)
+    @ExceptionHandler(NoSuchRecordFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ErrorApi> handleNoSuchElementFoundException(NoSuchElementFoundException itemNotFoundException, WebRequest request) {
+    public ResponseEntity<ErrorApi> handleNoSuchElementFoundException(NoSuchRecordFoundException itemNotFoundException, WebRequest request) {
         return buildErrorResponse(itemNotFoundException, HttpStatus.NOT_FOUND);
     }
 

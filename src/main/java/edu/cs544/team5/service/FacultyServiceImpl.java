@@ -2,9 +2,11 @@ package edu.cs544.team5.service;
 
 import edu.cs544.team5.domain.Faculty;
 import edu.cs544.team5.repository.FacultyRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,8 +14,9 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FacultyServiceImpl implements AbstractService<Faculty> {
-
+    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private FacultyRepository facultyRepository;
 
@@ -35,8 +38,9 @@ public class FacultyServiceImpl implements AbstractService<Faculty> {
     }
 
     @Override
-    public Faculty create(Faculty Faculty) {
-        return facultyRepository.save(Faculty);
+    public Faculty create(Faculty faculty) {
+        faculty.setPassword(passwordEncoder.encode(faculty.getPassword()));
+        return facultyRepository.save(faculty);
     }
 
     @Override

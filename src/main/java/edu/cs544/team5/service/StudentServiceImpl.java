@@ -9,12 +9,14 @@ import edu.cs544.team5.domain.Student;
 import edu.cs544.team5.dto.StudentCourseDto;
 import edu.cs544.team5.dto.StudentCreationDto;
 import edu.cs544.team5.dto.StudentReadDto;
-import edu.cs544.team5.exception.NoSuchElementFoundException;
+import edu.cs544.team5.exception.NoSuchRecordFoundException;
 import edu.cs544.team5.repository.CourseOfferingRepository;
 import edu.cs544.team5.repository.StudentRepository;
 import edu.cs544.team5.util.BarcodeFactory;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +26,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-
+    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private StudentRepository studentRepository;
 
@@ -44,11 +47,11 @@ public class StudentServiceImpl implements StudentService {
         modelMapper.addConverter(new CourseOfferingToStudentCourseDtoConvertor());
     }
 
-
     @Override
     public StudentReadDto createStudent(StudentCreationDto dto) {
         //convert dto to entity
         Student studentEntity = modelMapper.map(dto, Student.class);
+        studentEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         studentEntity.setBarcode(BarcodeFactory.getBarcore());
         Role role = roleService.fetchOrInsert(RoleType.STUDENT);
         studentEntity.addRole(role);
@@ -62,7 +65,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentReadDto findById(Integer id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchElementFoundException("No student available by id=" + id));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchRecordFoundException("No student available by id=" + id));
         return modelMapper.map(student, StudentReadDto.class);
     }
 
