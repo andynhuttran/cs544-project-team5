@@ -11,8 +11,8 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class GlobalExceptionHandller {
 
-    @ExceptionHandler(StudentControllerException.class)
-    public ResponseEntity<ErrorApi> handleStudentControllerException(StudentControllerException exception) {
+    @ExceptionHandler(StudentHandleException.class)
+    public ResponseEntity<ErrorApi> handleStudentControllerException(StudentHandleException exception) {
 
         ErrorApi errorApi = new ErrorApi();
         errorApi.setError("Error when calling StudentController");

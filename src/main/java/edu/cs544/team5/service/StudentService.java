@@ -1,8 +1,6 @@
 package edu.cs544.team5.service;
 
-import edu.cs544.team5.dto.StudentCourseDto;
-import edu.cs544.team5.dto.StudentCreationDto;
-import edu.cs544.team5.dto.StudentReadDto;
+import edu.cs544.team5.dto.*;
 
 import java.util.List;
 
@@ -19,4 +17,7 @@ public interface StudentService {
     List<StudentCourseDto> getCurrentCourseOffering(int id);
 
     List<StudentCourseDto> getFutureCourseOffering(int id);
+    public void activeOrDisableStudent(int id, boolean active);
+
+    public RegistrationReadDto registryCourse(int id, RegistrationCreationDto dto);
 }
