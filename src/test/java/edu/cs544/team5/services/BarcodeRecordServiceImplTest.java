@@ -3,7 +3,9 @@ package edu.cs544.team5.services;
 import edu.cs544.team5.domain.BarcodeRecord;
 import edu.cs544.team5.domain.ClassSession;
 import edu.cs544.team5.domain.Student;
+import edu.cs544.team5.dto.BarcodeRecordCreationDto;
 import edu.cs544.team5.repository.BarcodeRepository;
+import edu.cs544.team5.service.BarcodeService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 class BarcodeRecordServiceImplTest {
@@ -23,7 +25,8 @@ class BarcodeRecordServiceImplTest {
     private BarcodeRepository barcodeRepository;
 
     @Test
-    void createPerson() {
+    @DisplayName("create barcode")
+    void createBarcode() {
         Student student = null; // stub from student repository
         ClassSession classSession = null; // stub from classSession repository
         BarcodeRecord barcodeRecord = new BarcodeRecord();
@@ -39,7 +42,8 @@ class BarcodeRecordServiceImplTest {
             @Test
             @DisplayName("create and return BarcodeRecord object")
             void createAndReturnBarcodeRecordObject() {
-                assertEquals(barcodeRecord, personService.create(barcodeRecord));
+                BarcodeRecordCreationDto barcodeRecordCreationDto = new BarcodeRecordCreationDto();
+                fail("Not Implemented");
             }
         }
     }
