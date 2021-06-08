@@ -1,6 +1,7 @@
 package edu.cs544.team5.repository;
 
 import edu.cs544.team5.domain.CourseOffering;
+import edu.cs544.team5.domain.Faculty;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,7 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
     @Query("select distinct c from CourseOffering c, Student s inner join s.registrations inner join c.block b " +
             "where current_date < b.beginDate and s.id = :id")
     public List<CourseOffering> getFutureCourseOffering(int id);
+
+
+    List<CourseOffering> findCourseOfferingByFaculty(Faculty faculty);
 }

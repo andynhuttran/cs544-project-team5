@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
@@ -13,15 +14,19 @@ import java.time.LocalDate;
 @Getter
 public class AcademicBlock {
     @Id
+    @GeneratedValue
+
     private Integer id;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
+
     private LocalDate beginDate;
 
     @Column(nullable = false)
+
     private LocalDate endDate;
 
     @Column(nullable = false)

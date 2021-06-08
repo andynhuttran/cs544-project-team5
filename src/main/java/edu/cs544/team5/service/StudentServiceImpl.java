@@ -6,29 +6,29 @@ import edu.cs544.team5.domain.CourseOffering;
 import edu.cs544.team5.domain.Role;
 import edu.cs544.team5.domain.RoleType;
 import edu.cs544.team5.domain.Student;
-import edu.cs544.team5.dto.CourseReadDto;
 import edu.cs544.team5.dto.StudentCourseDto;
 import edu.cs544.team5.dto.StudentCreationDto;
 import edu.cs544.team5.dto.StudentReadDto;
+import edu.cs544.team5.exception.NoSuchRecordFoundException;
 import edu.cs544.team5.repository.CourseOfferingRepository;
-import edu.cs544.team5.repository.RoleRepository;
 import edu.cs544.team5.repository.StudentRepository;
 import edu.cs544.team5.util.BarcodeFactory;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-
+    private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private StudentRepository studentRepository;
 
@@ -39,24 +39,19 @@ public class StudentServiceImpl implements StudentService {
     private RoleService roleService;
 
     @Autowired
-    @Qualifier("studentMapping")
     private ModelMapper modelMapper;
 
-
-    @Autowired
-    private RoleRepository roleRepository;
-
     @PostConstruct
-    public void init(){
+    public void init() {
         modelMapper.addConverter(new StudentDTOToEntityConvertor());
         modelMapper.addConverter(new CourseOfferingToStudentCourseDtoConvertor());
     }
-
 
     @Override
     public StudentReadDto createStudent(StudentCreationDto dto) {
         //convert dto to entity
         Student studentEntity = modelMapper.map(dto, Student.class);
+        studentEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         studentEntity.setBarcode(BarcodeFactory.getBarcore());
         Role role = roleService.fetchOrInsert(RoleType.STUDENT);
         studentEntity.addRole(role);
@@ -66,6 +61,12 @@ public class StudentServiceImpl implements StudentService {
         //return dto
         StudentReadDto studentDTO = modelMapper.map(studentEntity, StudentReadDto.class);
         return studentDTO;
+    }
+
+    @Override
+    public StudentReadDto findById(Integer id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchRecordFoundException("No student available by id=" + id));
+        return modelMapper.map(student, StudentReadDto.class);
     }
 
 
@@ -88,11 +89,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    private List<StudentCourseDto> convertToStudentCourseDto(List<CourseOffering> courseOfferings){
+    private List<StudentCourseDto> convertToStudentCourseDto(List<CourseOffering> courseOfferings) {
         return courseOfferings.stream()
                 .map(courseOffering -> modelMapper.map(courseOffering, StudentCourseDto.class))
                 .collect(Collectors.toList());
     }
-
 
 }

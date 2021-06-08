@@ -12,7 +12,8 @@ import java.util.Date;
 @Getter
 public class BarcodeRecord {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @GeneratedValue
     private Integer id;
 
     @Temporal(TemporalType.DATE)

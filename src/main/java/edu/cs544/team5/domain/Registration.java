@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class Registration {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
 
     private LocalDate date;
