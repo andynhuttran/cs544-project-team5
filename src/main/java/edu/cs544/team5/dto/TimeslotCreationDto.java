@@ -8,7 +8,6 @@ import java.time.LocalTime;
 
 @Data
 public class TimeslotCreationDto {
-
     @NotNull
     private String timeslotId;
     @NotNull
