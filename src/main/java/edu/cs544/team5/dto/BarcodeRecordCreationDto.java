@@ -3,6 +3,7 @@ package edu.cs544.team5.dto;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -13,9 +14,9 @@ public class BarcodeRecordCreationDto {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime attendance;
 
-    @NotNull
-    private StudentCreationDto studentCreationDto;
+    @Valid
+    private StudentReadDto studentReadDto;
 
-    @NotNull
-    private ClassSessionCreationDto classSessionCreationDto;
+    @Valid
+    private ClassSessionReadDto classSessionReadDto;
 }
