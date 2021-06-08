@@ -10,9 +10,7 @@ import edu.cs544.team5.service.ClassSessionService;
 import edu.cs544.team5.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,7 @@ public class BarcodeController {
     @PostMapping
     public ResponseEntity<BarcodeRecordReadDto> create(@Valid @RequestBody BarcodeRecordCreationDto brDTO) {
         ClassSessionReadDto classSessionDTO = classSessionService.findById(brDTO.getClassSessionReadDto().getId());
-        StudentReadDto studentDTO = studentService.findById(brDTO.getStudentReadDto().getId());
+        StudentReadDto studentDTO = studentService.findByBarcode(brDTO.getStudentReadDto().getBarcode());
 
         BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
         barcodeRecord.setAttendance(brDTO.getAttendance());
@@ -45,14 +43,7 @@ public class BarcodeController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<BarcodeRecord>> fetchAll(
-            @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "asc") String order,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "25") int pageSize
-    ) {
-        Sort sortBy = Sort.by(order.equals("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sort);
-        Pageable request = PageRequest.of(page, pageSize, sortBy);
-        return ResponseEntity.ok(barcodeService.fetchAll(request));
+    public ResponseEntity<Page<BarcodeRecord>> fetchAll(Pageable pageable) {
+        return ResponseEntity.ok(barcodeService.fetchAll(pageable));
     }
 }

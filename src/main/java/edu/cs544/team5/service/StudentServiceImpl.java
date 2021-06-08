@@ -69,6 +69,12 @@ public class StudentServiceImpl implements StudentService {
         return modelMapper.map(student, StudentReadDto.class);
     }
 
+    @Override
+    public StudentReadDto findByBarcode(String barcode) {
+        Student student = studentRepository.findByBarcode(barcode).orElseThrow(() -> new NoSuchRecordFoundException("No student available by barcode=" + barcode));
+        return modelMapper.map(student, StudentReadDto.class);
+    }
+
 
     @Override
     public List<StudentCourseDto> getPastCourseOffering(int id) {

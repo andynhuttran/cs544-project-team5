@@ -12,6 +12,8 @@ public interface StudentService {
 
     StudentReadDto findById(Integer id);
 
+    StudentReadDto findByBarcode(String barcode);
+
     List<StudentCourseDto> getPastCourseOffering(int id);
 
     List<StudentCourseDto> getCurrentCourseOffering(int id);

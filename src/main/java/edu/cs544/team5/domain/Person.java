@@ -24,6 +24,10 @@ public class Person {
 
     private String lastName;
 
+    private String username;
+
+    private String password;
+
     @ManyToMany
     @JoinTable(name = "person_role")
     @Setter(AccessLevel.NONE)
