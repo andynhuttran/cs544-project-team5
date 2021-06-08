@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class AcademicBlock {
+
     @Id
     @GeneratedValue
-
     private Integer id;
 
     @Column(nullable = false)

@@ -1,16 +1,16 @@
 package edu.cs544.team5.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-
-@Data
+@Getter
+@Setter
 public class RegistrationReadDto {
 
-    private Integer id;
-    private LocalDate date;
-    private CourseOfferingReadDto offering;
-    private StudentReadDto studentReadDto;
-
+    LocalDate date;
+    List<StudentCourseDto> courses = new ArrayList<>();
 }

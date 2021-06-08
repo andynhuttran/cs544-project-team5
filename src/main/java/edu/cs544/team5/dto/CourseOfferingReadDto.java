@@ -19,4 +19,6 @@ public class CourseOfferingReadDto {
     private FacultyReadDto facultyReadDto;
     private AcademicBlockReadDto block;
     private Collection<RegistrationReadDto> registrationReadDtos;
+
+
 }

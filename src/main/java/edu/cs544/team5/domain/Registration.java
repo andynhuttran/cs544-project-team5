@@ -15,14 +15,14 @@ import java.time.LocalDate;
 public class Registration {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private LocalDate date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CourseOffering offering;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Student student;
 }

@@ -2,12 +2,14 @@ package edu.cs544.team5.repository;
 
 import edu.cs544.team5.domain.CourseOffering;
 import edu.cs544.team5.domain.Faculty;
+import io.swagger.models.auth.In;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -31,6 +33,7 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
             "where current_date < b.beginDate and s.id = :id")
     public List<CourseOffering> getFutureCourseOffering(int id);
 
+    public List<CourseOffering> findCourseOfferingByIdIn(Collection<Integer> ids);
 
     List<CourseOffering> findCourseOfferingByFaculty(Faculty faculty);
 }

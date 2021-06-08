@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -31,7 +33,7 @@ public class CourseOffering {
     private AcademicBlock block;
 
     @OneToMany(mappedBy = "offering", fetch = FetchType.LAZY)
-    private Collection<Registration> registrations;
+    private Set<Registration> registrations = new HashSet<>();
 
     @Override
     public String toString() {
@@ -40,5 +42,12 @@ public class CourseOffering {
                 ", period='" + period + '\'' +
                 ", startDate=" + startDate +
                 '}';
+    }
+
+
+    public void addRegistration(Registration registration){
+        if (registrations.add(registration)){
+            registration.setOffering(this);
+        }
     }
 }

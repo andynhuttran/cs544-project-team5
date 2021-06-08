@@ -13,10 +13,13 @@ import java.util.Collection;
 @Setter
 public class StudentCreationDto {
 
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
+    @NotNull
     private String studentId;
 
     @NotNull

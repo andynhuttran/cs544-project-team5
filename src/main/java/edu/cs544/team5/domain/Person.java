@@ -24,6 +24,8 @@ public class Person {
 
     private String lastName;
 
+    private boolean active = true;
+
     @ManyToMany
     @JoinTable(name = "person_role")
     @Setter(AccessLevel.NONE)

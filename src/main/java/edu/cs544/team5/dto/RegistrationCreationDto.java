@@ -2,20 +2,19 @@ package edu.cs544.team5.dto;
 
 import edu.cs544.team5.domain.CourseOffering;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 
-@Data
+@Getter
+@Setter
 public class RegistrationCreationDto {
 
-    @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate date;
-    @NotNull
-    private CourseOffering offering;
-    @NotNull
-    private StudentCreationDto studentCreationDto;
+    @NotEmpty
+    private int[] courseOfferings;
 }
