@@ -73,15 +73,25 @@ public class CourseOfferingController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CourseOfferingReadDto> create(CourseOfferingCreationDto newCourseOffering) {
+    public ResponseEntity<CourseOfferingReadDto> create(@RequestBody CourseOfferingCreationDto newCourseOffering) {
         CourseOffering courseOffering = modelMapper.map(newCourseOffering, CourseOffering.class);
+
         Course course = courseService.findById(newCourseOffering.getCourseId());
+        if (course == null)
+            return ResponseEntity.badRequest().build();
+
         courseOffering.setCourse(course);
 
         Faculty faculty = facultyService.findById(newCourseOffering.getFacultyId());
+        if (faculty == null)
+            return ResponseEntity.badRequest().build();
+
         courseOffering.setFaculty(faculty);
 
         AcademicBlock academicBlock = blockService.findById(newCourseOffering.getAcademicBlockId());
+        if (academicBlock == null) {
+            return ResponseEntity.badRequest().build();
+        }
         courseOffering.setBlock(academicBlock);
 
         courseOffering = courseOfferingService.create(courseOffering);
@@ -95,9 +105,30 @@ public class CourseOfferingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseOfferingReadDto> update(@RequestBody CourseOffering CourseOffering, @PathVariable int id) {
-        CourseOffering.setId(id);
-        CourseOffering updatedCourseOffering = courseOfferingService.update(CourseOffering);
+    public ResponseEntity<CourseOfferingReadDto> update(@RequestBody CourseOfferingCreationDto courseOfferingDto, @PathVariable int id) {
+
+        Course course = courseService.findById(courseOfferingDto.getCourseId());
+        if (course == null)
+            return ResponseEntity.badRequest().build();
+
+
+        Faculty faculty = facultyService.findById(courseOfferingDto.getFacultyId());
+        if (faculty == null)
+            return ResponseEntity.badRequest().build();
+
+
+        AcademicBlock academicBlock = blockService.findById(courseOfferingDto.getAcademicBlockId());
+        if (academicBlock == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        CourseOffering courseOffering = modelMapper.map(courseOfferingDto, CourseOffering.class);
+        courseOffering.setId(id);
+        courseOffering.setFaculty(faculty);
+        courseOffering.setCourse(course);
+        courseOffering.setBlock(academicBlock);
+
+        CourseOffering updatedCourseOffering = courseOfferingService.update(courseOffering);
 
         if (updatedCourseOffering == null) {
             return ResponseEntity.notFound().build();

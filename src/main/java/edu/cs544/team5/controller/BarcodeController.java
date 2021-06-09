@@ -1,10 +1,7 @@
 package edu.cs544.team5.controller;
 
 import edu.cs544.team5.domain.BarcodeRecord;
-import edu.cs544.team5.dto.BarcodeRecordCreationDto;
-import edu.cs544.team5.dto.BarcodeRecordReadDto;
-import edu.cs544.team5.dto.ClassSessionReadDto;
-import edu.cs544.team5.dto.StudentReadDto;
+import edu.cs544.team5.dto.*;
 import edu.cs544.team5.service.BarcodeService;
 import edu.cs544.team5.service.ClassSessionService;
 import edu.cs544.team5.service.StudentService;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,5 +65,30 @@ public class BarcodeController {
                 .map(br -> modelMapper.map(br, BarcodeRecordReadDto.class)).collect(Collectors.toList());
         return ResponseEntity.ok(barcodeRecordReadDtos);
 
+    }
+
+    @PostMapping("/checkin")
+    public ResponseEntity<String> create(@RequestBody CheckInCreationDto checkInCreationDto) {
+        BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
+
+        StudentReadDto studentReadDto = modelMapper.map(
+                studentService.findByBarcode(checkInCreationDto.getStudentBarcode()), StudentReadDto.class);
+
+        if (studentReadDto == null)
+            return ResponseEntity.notFound().build();
+
+        ClassSessionReadDto classSessionReadDto = modelMapper.map(
+                classSessionService.findById(checkInCreationDto.getClassSessionId()), ClassSessionReadDto.class);
+
+        if (classSessionReadDto == null)
+            return ResponseEntity.notFound().build();
+
+        barcodeRecord.setAttendance(LocalDateTime.now());
+        barcodeRecord.setClassSessionReadDto(classSessionReadDto);
+        barcodeRecord.setStudentReadDto(studentReadDto);
+
+        barcodeService.create(barcodeRecord);
+
+        return ResponseEntity.ok("Checkin Successful for Barcode: " + checkInCreationDto.getStudentBarcode());
     }
 }
