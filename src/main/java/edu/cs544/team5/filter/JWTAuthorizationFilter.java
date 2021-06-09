@@ -22,13 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-    @Value("${api.secret}")
-    private String secret;
-    @Value("${api.token-prefix}")
-    private String tokenPrefix = "Bearer ";
+import static edu.cs544.team5.filter.SharedConstants.*;
 
-    private static final String HEADER_STRING = "Authorization";
+public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -38,7 +34,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String header = request.getHeader(HEADER_STRING);
 
-        if (header == null || !header.startsWith(tokenPrefix)) {
+        if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
@@ -51,14 +47,11 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        secret = "noop";
-        tokenPrefix = "Bearer ";
-
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
-            DecodedJWT verify = JWT.require(Algorithm.HMAC512(secret.getBytes()))
+            DecodedJWT verify = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
                     .build()
-                    .verify(token.replace(tokenPrefix, ""));
+                    .verify(token.replace(TOKEN_PREFIX, ""));
 
             String username = verify.getSubject();
             List<RoleType> role = verify.getClaim("role").asList(RoleType.class);
