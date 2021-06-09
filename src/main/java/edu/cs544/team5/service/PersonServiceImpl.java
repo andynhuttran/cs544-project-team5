@@ -21,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
+    private final RoleService roleService;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -30,18 +31,35 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findByUsername(username).orElseThrow(() -> new NoSuchRecordFoundException("Username not found"));
     }
 
+
+    @Override
+    public PersonReadDto update(PersonCreationDto p) {
+        /**
+         * @Todo
+         * update not create
+         */
+        Optional<Person> byUsername = personRepository.findByUsername(p.getUsername());
+        if (!byUsername.isPresent()) {
+            throw new NoSuchRecordFoundException("Not registered user. Please use different username.");
+        }
+        return getPersonReadWriteDto(p);
+    }
+
     @Override
     public PersonReadDto create(PersonCreationDto p) {
         Optional<Person> byUsername = personRepository.findByUsername(p.getUsername());
         if (byUsername.isPresent()) {
             throw new NoSuchRecordFoundException("User already registered. Please use different username.");
         }
+        return getPersonReadWriteDto(p);
+    }
+
+    private PersonReadDto getPersonReadWriteDto(PersonCreationDto p) {
         Person userModel = modelMapper.map(p, Person.class);
         userModel.setPassword(passwordEncoder.encode(p.getPassword()));
         p.getRoles().forEach(
                 r -> {
-                    Role role = new Role();
-                    role.setType(r.getType());
+                    Role role = this.roleService.fetchOrInsert(r.getType());
                     userModel.addRole(role);
                 }
         );
@@ -56,6 +74,17 @@ public class PersonServiceImpl implements PersonService {
             return p;
         }).orElseThrow(NoSuchRecordFoundException::new);
         personRepository.save(updated);
+    }
+
+    @Override
+    public void removeByUsername(String username) {
+/**
+ * @Todo
+ * remove cascade by delete
+ */
+
+        Person person = findByUsername(username);
+        personRepository.delete(person);
     }
 
     @Override

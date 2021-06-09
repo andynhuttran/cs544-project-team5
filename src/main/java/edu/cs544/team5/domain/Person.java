@@ -30,7 +30,7 @@ public class Person {
 
     private boolean active = true;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "person_role")
     @Setter(AccessLevel.NONE)
     private Set<Role> roles = new HashSet<>();

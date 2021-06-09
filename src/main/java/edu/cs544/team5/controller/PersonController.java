@@ -28,6 +28,12 @@ public class PersonController {
         return ResponseEntity.created(URI.create("")).body(created);
     }
 
+    @PutMapping
+    public ResponseEntity<PersonReadDto> update(@Valid @RequestBody PersonCreationDto p) {
+        PersonReadDto created = personService.update(p);
+        return ResponseEntity.accepted().body(created);
+    }
+
     @GetMapping
     public Page<Person> fetchAll(Pageable pageable) {
         return personService.fetchAll(pageable);
@@ -45,4 +51,9 @@ public class PersonController {
         return ResponseEntity.ok(modelMapper.map(person, PersonReadDto.class));
     }
 
+    @DeleteMapping("/{username}")
+    public ResponseEntity<String> delete(@PathVariable String username) {
+        personService.removeByUsername(username);
+        return ResponseEntity.noContent().build();
+    }
 }
