@@ -23,7 +23,7 @@ public class Student extends Person {
     @Column(length = 50, nullable = false, unique = true)
     private String barcode;
 
-    @OneToMany(mappedBy = "student", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "student", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     private Set<Registration> registrations;
 
 

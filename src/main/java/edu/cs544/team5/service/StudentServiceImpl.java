@@ -52,10 +52,10 @@ public class StudentServiceImpl implements StudentService {
         //convert dto to entity
         Student studentEntity = modelMapper.map(dto, Student.class);
         studentEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
+        studentEntity.setUsername(dto.getUsername());
         studentEntity.setBarcode(BarcodeFactory.getBarcore());
         Role role = roleService.fetchOrInsert(RoleType.STUDENT);
         studentEntity.addRole(role);
-
         studentRepository.save(studentEntity);
 
         //return dto

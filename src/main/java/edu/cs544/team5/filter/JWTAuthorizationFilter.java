@@ -4,6 +4,7 @@ package edu.cs544.team5.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import edu.cs544.team5.domain.RoleType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,8 +18,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     @Value("${api.secret}")
@@ -49,22 +51,30 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+        secret = "noop";
+        tokenPrefix = "Bearer ";
+
         String token = request.getHeader(HEADER_STRING);
-        DecodedJWT verify = JWT.require(Algorithm.HMAC512(secret.getBytes()))
-                .build()
-                .verify(token.replace(tokenPrefix, ""));
+        if (token != null) {
+            DecodedJWT verify = JWT.require(Algorithm.HMAC512(secret.getBytes()))
+                    .build()
+                    .verify(token.replace(tokenPrefix, ""));
 
-        String username = verify.getSubject();
-        String role = verify.getClaim("role").asString();
+            String username = verify.getSubject();
+            List<RoleType> role = verify.getClaim("role").asList(RoleType.class);
 
-        if (username != null) {
-            return new UsernamePasswordAuthenticationToken(username, null, getAuthorities(role));
+            if (username != null) {
+                return new UsernamePasswordAuthenticationToken(username, null, getAuthorities(role));
+            }
+            return null;
         }
         return null;
     }
 
-    private Collection<? extends GrantedAuthority> getAuthorities(String role) {
-        return Arrays.asList(new SimpleGrantedAuthority(role));
+    private Collection<? extends GrantedAuthority> getAuthorities(List<RoleType> roles) {
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        return authorities;
     }
 
 }

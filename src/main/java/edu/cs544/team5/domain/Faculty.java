@@ -14,5 +14,4 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class Faculty extends Person {
     private String title;
-
 }

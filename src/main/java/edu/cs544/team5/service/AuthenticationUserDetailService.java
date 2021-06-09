@@ -24,12 +24,14 @@ public class AuthenticationUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personService.findByUsername(username);
-        return new User(person.getUsername(), person.getPassword(), getAuthorities(person.getRoles()));
+        return new User(person.getUsername(), person.getPassword(),
+                getAuthorities(person.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getType().toString())));
+        roles.forEach(role -> authorities
+                .add(new SimpleGrantedAuthority(role.getType().toString())));
         return authorities;
     }
 }

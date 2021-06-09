@@ -28,7 +28,7 @@ public class Person {
 
     private String password;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "person_role")
     @Setter(AccessLevel.NONE)
     private Set<Role> roles = new HashSet<>();
