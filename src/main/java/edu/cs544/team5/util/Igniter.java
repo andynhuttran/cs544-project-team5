@@ -29,15 +29,18 @@ public class Igniter implements CommandLineRunner {
         List<Role> roles = Arrays.asList(new Role(ADMIN), new Role(STUDENT), new Role(FACULTY), new Role(PERSONNEL));
 
         Person admin = new Person();
+        admin.setId(10);
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
         admin.setUsername("admin");
         admin.setActive(true);
         admin.setPassword(bCryptPasswordEncoder.encode("admin"));
         admin.addRole(roles.get(0));
-        roles.forEach(
-                roleRepository::save
-        );
-        personRepository.save(admin);
+
+//        roles.forEach(
+//                roleRepository::save
+//        );
+        //personRepository.save(admin);
+
     }
 }
