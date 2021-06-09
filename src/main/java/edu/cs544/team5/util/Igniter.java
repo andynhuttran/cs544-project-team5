@@ -1,6 +1,5 @@
 package edu.cs544.team5.util;
 
-import com.sun.tools.javac.util.List;
 import edu.cs544.team5.domain.Person;
 import edu.cs544.team5.domain.Role;
 import edu.cs544.team5.repository.PersonRepository;
@@ -10,6 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static edu.cs544.team5.domain.RoleType.*;
 
@@ -24,7 +26,7 @@ public class Igniter implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        List<Role> roles = List.of(new Role(ADMIN), new Role(STUDENT), new Role(FACULTY), new Role(PERSONNEL));
+        List<Role> roles = Arrays.asList(new Role(ADMIN), new Role(STUDENT), new Role(FACULTY), new Role(PERSONNEL));
 
         Person admin = new Person();
         admin.setFirstName("Admin");

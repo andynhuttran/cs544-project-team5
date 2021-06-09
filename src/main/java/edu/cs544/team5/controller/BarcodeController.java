@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,6 +34,7 @@ public class BarcodeController {
     private ClassSessionService classSessionService;
     @Autowired
     private ModelMapper modelMapper;
+
     /**
      * @param brDTO request body
      * @return created BarcodeRecord object as a JSON with 201 HTTP status
@@ -57,9 +58,9 @@ public class BarcodeController {
 
     }
 
-    @GetMapping(value = "/course/{courseId}/student/{studentId}", params = { "page", "size" })
-    public ResponseEntity<List<BarcodeRecordReadDto>> getByStudent(@PathVariable int courseId, @PathVariable int studentId,@RequestParam("page") int page,
-                                                                   @RequestParam("size") int size){
+    @GetMapping(value = "/course/{courseId}/student/{studentId}", params = {"page", "size"})
+    public ResponseEntity<List<BarcodeRecordReadDto>> getByStudent(@PathVariable int courseId, @PathVariable int studentId, @RequestParam("page") int page,
+                                                                   @RequestParam("size") int size) {
         Pageable pageReq = PageRequest.of(page, size);
 
         Page<BarcodeRecord> barcodeRecordList = barcodeService.getBarcodeByStudentAndClassSession(courseId, studentId, pageReq);
