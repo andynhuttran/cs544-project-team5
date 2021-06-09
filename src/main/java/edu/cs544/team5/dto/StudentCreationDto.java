@@ -25,10 +25,8 @@ public class StudentCreationDto {
     private String password;
     @Valid
     private Set<RoleCreationDto> roles;
-
     @NotNull
     private String studentId;
-
     @NotNull
     private LocalDate entryDate;
 
