@@ -15,8 +15,11 @@ import java.util.Collection;
 public interface RegistrationRepository extends JpaRepository<Registration, Integer> {
 
     @Modifying
-    @Query(value = "insert into registration (student_id, offering_id) VALUES (:offeringId, :studentId)", nativeQuery = true)
+    @Query(value = "insert into registration (student_id, offering_id) VALUES (:studentId, :offeringId)", nativeQuery = true)
     public int insert(int studentId, int offeringId);
 
+
+    @Query(value = "select COUNT(*) from registration where student_id = :studentId and offering_id = :offeringId", nativeQuery = true)
+    public int count(int studentId, int offeringId);
 
 }

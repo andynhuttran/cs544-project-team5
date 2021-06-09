@@ -24,6 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +57,10 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     private ModelMapper modelMapper;
 
+
+    @Autowired
+    private EntityManager entityManager;
+
     @PostConstruct
     public void init() {
         modelMapper.addConverter(new StudentDTOToEntityConvertor());
@@ -60,52 +68,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    private Student getStudent(int id) {
-        Optional<Student> studentOptional = studentRepository.getStudentById(id);
-        return studentOptional.orElseThrow(() -> new StudentHandleException(HttpStatus.NOT_FOUND, "Can not found student with id = " + id));
-    }
-
-    @Override
-
-    @Transactional(readOnly = true)
-    public StudentReadDto getOneStudent(int id) {
-        Student student = getStudent(id);
-        if (!student.isActive()) {
-            throw new StudentHandleException(HttpStatus.NOT_FOUND, "The student is deactivated");
-        }
-
-        return modelMapper.map(student, StudentReadDto.class);
-    }
-
-    @Override
-    public void activeOrDisableStudent(int id, boolean active) {
-        Student student = getStudent(id);
-
-        if (student.isActive() != active) { //change active state
-            student.setActive(active);
-            studentRepository.save(student);
-        } else {
-            String status = active ? "active" : "deactivated";
-            throw new StudentHandleException(HttpStatus.BAD_REQUEST, "The student have been " + status);
-        }
-    }
-
-    @Override
-    public StudentReadDto findById(Integer id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchRecordFoundException("No student available by id=" + id));
-        return modelMapper.map(student, StudentReadDto.class);
-    }
-
-    @Override
-    public StudentReadDto findByBarcode(String barcode) {
-        Student student = studentRepository.findByBarcode(barcode).orElseThrow(() -> new NoSuchRecordFoundException("No student available by barcode=" + barcode));
-        return modelMapper.map(student, StudentReadDto.class);
-    }
-
 
     @Override
     @Transactional
     public StudentReadDto createStudent(StudentCreationDto dto) {
+        //convert dto to entity
         Student studentEntity = modelMapper.map(dto, Student.class);
         studentEntity.setBarcode(BarcodeFactory.getBarcore());
 
@@ -116,37 +83,71 @@ public class StudentServiceImpl implements StudentService {
         studentEntity.addRole(role);
 
         studentRepository.save(studentEntity);
-        return modelMapper.map(studentEntity, StudentReadDto.class);
+
+        //return dto
+        StudentReadDto studentDTO = modelMapper.map(studentEntity, StudentReadDto.class);
+        return studentDTO;
     }
 
     @Override
     @Transactional(readOnly = true)
+    public StudentReadDto findById(Integer id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentHandleException(HttpStatus.NOT_FOUND, "No student available by id=" + id));
+        if (student.isActive() == false) {
+            throw new StudentHandleException(HttpStatus.NOT_FOUND, "The student is deactivated");
+        }
+
+        return modelMapper.map(student, StudentReadDto.class);
+    }
+
+    @Override
+    public StudentReadDto findByBarcode(String barcode) {
+        Student student = studentRepository.findByBarcode(barcode).orElseThrow(() -> new NoSuchRecordFoundException("No student available by barcode=" + barcode));
+        return modelMapper.map(student, StudentReadDto.class);
+    }
+
+    @Override
     public List<StudentCourseDto> getPastCourseOffering(int id) {
         List<CourseOffering> courseOfferings = courseOfferingRepository.getPastCourseOffering(id);
         return convertToStudentCourseDto(courseOfferings);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<StudentCourseDto> getCurrentCourseOffering(int id) {
         List<CourseOffering> courseOfferings = courseOfferingRepository.getCurrentCourseOffering(id);
         return convertToStudentCourseDto(courseOfferings);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<StudentCourseDto> getFutureCourseOffering(int id) {
         List<CourseOffering> courseOfferings = courseOfferingRepository.getFutureCourseOffering(id);
         return convertToStudentCourseDto(courseOfferings);
     }
 
+    private Student getStudent(int id){
+        Optional<Student> studentOptional = studentRepository.getStudentById(id);
+        return studentOptional.orElseThrow(() -> new StudentHandleException(HttpStatus.NOT_FOUND, "Can not found student with id = " + id));
+    }
+
+    @Override
+    public void activeOrDisableStudent(int id, boolean active) {
+        Student student = getStudent(id);
+
+        if (student.isActive() != active){ //change active state
+            student.setActive(active);
+            studentRepository.save(student);
+        }
+        else {
+            String status = active?"active":"deactivated";
+            throw new StudentHandleException(HttpStatus.BAD_REQUEST, "The student have been " + status);
+        }
+    }
 
     private List<StudentCourseDto> convertToStudentCourseDto(List<CourseOffering> courseOfferings) {
         return courseOfferings.stream()
                 .map(courseOffering -> modelMapper.map(courseOffering, StudentCourseDto.class))
                 .collect(Collectors.toList());
     }
-
 
     @Override
     @Transactional
@@ -157,10 +158,11 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Arrays.stream(dto.getCourseOfferings()).forEach(offeringId -> {
-            System.out.println(studentId + " - " + offeringId);
-            registrationRepository.insert(studentId, offeringId);
+            int count = registrationRepository.count(studentId, offeringId);
+            if (count == 0) {
+                registrationRepository.insert(studentId, offeringId);
+            }
         });
-
 
         List<Integer> list = new ArrayList<>();
         Arrays.stream(dto.getCourseOfferings()).forEach(list::add);
@@ -171,7 +173,6 @@ public class StudentServiceImpl implements StudentService {
         registrationReadDto.setCourses(courses);
         registrationReadDto.setDate(LocalDate.now());
         return registrationReadDto;
-
     }
 
 }

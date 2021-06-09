@@ -15,6 +15,9 @@ public class StudentDTOToEntityConvertor extends AbstractConverter<StudentCreati
         student.setLastName(source.getLastName());
         student.setEntryDate(source.getEntryDate());
 
+        student.setUsername(source.getUsername());
+        student.setPassword(source.getPassword());
+
         return student;
     }
 }

@@ -8,10 +8,6 @@ public interface StudentService {
 
     StudentReadDto createStudent(StudentCreationDto dto);
 
-    StudentReadDto getOneStudent(int id);
-
-    void activeOrDisableStudent(int id, boolean active);
-
     StudentReadDto findById(Integer id);
 
     StudentReadDto findByBarcode(String barcode);
@@ -21,6 +17,8 @@ public interface StudentService {
     List<StudentCourseDto> getCurrentCourseOffering(int id);
 
     List<StudentCourseDto> getFutureCourseOffering(int id);
+    public void activeOrDisableStudent(int id, boolean active);
 
-    RegistrationReadDto registryCourse(int id, RegistrationCreationDto dto);
+    public RegistrationReadDto registryCourse(int id, RegistrationCreationDto dto);
+
 }
