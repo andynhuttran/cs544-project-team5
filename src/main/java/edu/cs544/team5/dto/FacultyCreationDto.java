@@ -7,8 +7,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Setter
+
 @Getter
+@Setter
 public class FacultyCreationDto extends PersonCreationDto {
     @NotNull
     private String title;

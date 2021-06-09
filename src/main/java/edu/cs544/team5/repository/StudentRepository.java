@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface StudentRepository extends JpaRepository<Student, Integer> {
+
     Optional<Student> getStudentById(int id);
 
     Optional<Student> findByBarcode(String barcode);
