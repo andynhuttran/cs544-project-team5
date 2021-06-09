@@ -16,11 +16,11 @@ public class ClassSessionCreationDto {
     private LocalDate date;
 
     @NotNull
-    private TimeslotCreationDto timeslot;
+    private Integer timeslotId;
 
     @NotNull
-    private CourseOffering courseOffering;
+    private Integer courseOfferingId;
 
     @NotNull
-    private LocationCreationDto locationCreationDto;
+    private Integer locationId;
 }

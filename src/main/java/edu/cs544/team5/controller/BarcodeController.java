@@ -1,6 +1,7 @@
 package edu.cs544.team5.controller;
 
 import edu.cs544.team5.domain.BarcodeRecord;
+import edu.cs544.team5.domain.ClassSession;
 import edu.cs544.team5.dto.*;
 import edu.cs544.team5.service.BarcodeService;
 import edu.cs544.team5.service.ClassSessionService;
@@ -39,7 +40,7 @@ public class BarcodeController {
      */
     @PostMapping
     public ResponseEntity<BarcodeRecordReadDto> create(@Valid @RequestBody BarcodeRecordCreationDto brDTO) {
-        ClassSessionReadDto classSessionDTO = classSessionService.findById(brDTO.getClassSessionReadDto().getId());
+        ClassSessionReadDto classSessionDTO = modelMapper.map(classSessionService.findById(brDTO.getClassSessionReadDto().getId()), ClassSessionReadDto.class);
         StudentReadDto studentDTO = studentService.findByBarcode(brDTO.getStudentReadDto().getBarcode());
 
         BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
@@ -71,8 +72,7 @@ public class BarcodeController {
     public ResponseEntity<String> create(@RequestBody CheckInCreationDto checkInCreationDto) {
         BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
 
-        StudentReadDto studentReadDto = modelMapper.map(
-                studentService.findByBarcode(checkInCreationDto.getStudentBarcode()), StudentReadDto.class);
+        StudentReadDto studentReadDto = studentService.findByBarcode(checkInCreationDto.getStudentBarcode());
 
         if (studentReadDto == null)
             return ResponseEntity.notFound().build();
