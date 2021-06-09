@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.cs544.team5.domain.Person;
 import edu.cs544.team5.exception.NoSuchRecordFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -31,6 +33,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
@@ -44,12 +47,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             new ArrayList<>())
             );
         } catch (IOException e) {
-            throw new NoSuchRecordFoundException("No User found by the given credentials");
+            throw new NoSuchRecordFoundException("From Top - No User found by the given credentials");
         }
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
         String token = JWT.create()
                 .withSubject(((User) auth.getPrincipal()).getUsername())
                 .withClaim("role",
@@ -57,7 +60,21 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.addHeader(HEADER_STRING,
                 TOKEN_PREFIX + token);
+
+        response.getWriter().write("[" + objectMapper.writeValueAsString(auth.getPrincipal())
+                + ", {\"token\": \"" + TOKEN_PREFIX + token + "\"}]");
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"error\": \"No User found by the given credentials\"}");
+        SecurityContextHolder.clearContext();
     }
 }
