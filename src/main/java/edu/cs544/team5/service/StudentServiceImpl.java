@@ -16,8 +16,10 @@ import edu.cs544.team5.util.BarcodeFactory;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
+
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -63,6 +66,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+
     @Transactional(readOnly = true)
     public StudentReadDto getOneStudent(int id) {
         Student student = getStudent(id);
@@ -98,6 +102,7 @@ public class StudentServiceImpl implements StudentService {
         return modelMapper.map(student, StudentReadDto.class);
     }
 
+
     @Override
     @Transactional
     public StudentReadDto createStudent(StudentCreationDto dto) {
@@ -113,7 +118,6 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(studentEntity);
         return modelMapper.map(studentEntity, StudentReadDto.class);
     }
-
 
     @Override
     @Transactional(readOnly = true)

@@ -10,4 +10,6 @@ public interface BarcodeService {
     BarcodeRecordReadDto create(BarcodeRecordCreationDto barcodeRecord);
 
     Page<BarcodeRecord> fetchAll(Pageable request);
+
+    Page<BarcodeRecord> getBarcodeByStudentAndClassSession(int courseId, int studentId, Pageable pageable);
 }
