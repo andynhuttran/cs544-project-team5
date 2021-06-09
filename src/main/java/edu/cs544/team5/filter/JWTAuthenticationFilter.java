@@ -47,7 +47,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             new ArrayList<>())
             );
         } catch (IOException e) {
-            throw new NoSuchRecordFoundException("From Top - No User found by the given credentials");
+            throw new NoSuchRecordFoundException("No User found by the given credentials");
         }
     }
 

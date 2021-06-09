@@ -14,13 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("/api/v1//record")
+@RequestMapping("/api/v1/record")
 @RestController
 @RequiredArgsConstructor
 public class BarcodeController {
@@ -32,23 +30,6 @@ public class BarcodeController {
     private ClassSessionService classSessionService;
     @Autowired
     private ModelMapper modelMapper;
-
-    /**
-     * @param brDTO request body
-     * @return created BarcodeRecord object as a JSON with 201 HTTP status
-     */
-    @PostMapping
-    public ResponseEntity<BarcodeRecordReadDto> create(@Valid @RequestBody BarcodeRecordCreationDto brDTO) {
-        ClassSessionReadDto classSessionDTO = classSessionService.findById(brDTO.getClassSessionReadDto().getId());
-        StudentReadDto studentDTO = studentService.findByBarcode(brDTO.getStudentReadDto().getBarcode());
-
-        BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
-        barcodeRecord.setAttendance(LocalDateTime.now());
-        barcodeRecord.setClassSessionReadDto(classSessionDTO);
-        barcodeRecord.setStudentReadDto(studentDTO);
-        BarcodeRecordReadDto created = barcodeService.create(barcodeRecord);
-        return ResponseEntity.created(URI.create("")).body(created);
-    }
 
     @GetMapping
     public ResponseEntity<Page<BarcodeRecord>> fetchAll(Pageable pageable) {
@@ -67,6 +48,10 @@ public class BarcodeController {
 
     }
 
+    /**
+     * @param checkInCreationDto request body
+     * @return created BarcodeRecord object as a JSON with 201 HTTP status
+     */
     @PostMapping("/checkin")
     public ResponseEntity<String> create(@RequestBody CheckInCreationDto checkInCreationDto) {
         BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
