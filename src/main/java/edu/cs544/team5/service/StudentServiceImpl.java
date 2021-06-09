@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +48,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+
+    @Autowired
+    private EntityManager entityManager;
 
     @PostConstruct
     public void init() {
@@ -123,7 +129,6 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-
     private List<StudentCourseDto> convertToStudentCourseDto(List<CourseOffering> courseOfferings) {
         return courseOfferings.stream()
                 .map(courseOffering -> modelMapper.map(courseOffering, StudentCourseDto.class))
@@ -139,9 +144,11 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Arrays.stream(dto.getCourseOfferings()).forEach(offeringId -> {
-            registrationRepository.insert(studentId, offeringId);
+            int count = registrationRepository.count(studentId, offeringId);
+            if (count == 0) {
+                registrationRepository.insert(studentId, offeringId);
+            }
         });
-
 
         List<Integer> list = new ArrayList<>();
         Arrays.stream(dto.getCourseOfferings()).forEach(list::add);
@@ -152,7 +159,6 @@ public class StudentServiceImpl implements StudentService {
         registrationReadDto.setCourses(courses);
         registrationReadDto.setDate(LocalDate.now());
         return registrationReadDto;
-
     }
 
 }

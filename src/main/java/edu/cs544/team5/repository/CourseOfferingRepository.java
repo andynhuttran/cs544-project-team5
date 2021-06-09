@@ -21,7 +21,6 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
             "where b.endDate < current_date and s.id = :id")
     public List<CourseOffering> getPastCourseOffering(int id);
 
-
     @EntityGraph(attributePaths = {"course", "faculty", "block"})
     @Query("select distinct c from CourseOffering c, Student s inner join s.registrations inner join c.block b " +
             "where b.beginDate <= current_date and current_date <= b.endDate and s.id = :id")
@@ -33,6 +32,7 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
             "where current_date < b.beginDate and s.id = :id")
     public List<CourseOffering> getFutureCourseOffering(int id);
 
+    @EntityGraph(attributePaths = {"course", "faculty", "block"})
     public List<CourseOffering> findCourseOfferingByIdIn(Collection<Integer> ids);
 
     List<CourseOffering> findCourseOfferingByFaculty(Faculty faculty);
