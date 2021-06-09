@@ -27,7 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'com.auth0:java-jwt:3.15.0'
     implementation 'junit:junit:4.13.1'
-//    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-core'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -39,6 +39,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'org.modelmapper:modelmapper:2.4.4'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 }
 
 test {
@@ -47,4 +48,9 @@ test {
 
 flyway {
     url = "jdbc:postgresql://localhost:5432/team5"
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2020.0.3"
+    }
 }
