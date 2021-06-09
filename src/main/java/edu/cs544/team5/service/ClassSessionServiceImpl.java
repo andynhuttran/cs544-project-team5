@@ -6,6 +6,7 @@ import edu.cs544.team5.exception.NoSuchRecordFoundException;
 import edu.cs544.team5.repository.ClassSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ClassSessionServiceImpl implements ClassSessionService {
-    private final ClassSessionRepository classSessionRepository;
-    private final ModelMapper modelMapper;
+
+    @Autowired
+    private ClassSessionRepository classSessionRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Override
     public ClassSessionReadDto findById(Integer id) {

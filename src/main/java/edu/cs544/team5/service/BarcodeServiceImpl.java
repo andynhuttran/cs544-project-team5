@@ -4,8 +4,8 @@ import edu.cs544.team5.domain.BarcodeRecord;
 import edu.cs544.team5.dto.BarcodeRecordCreationDto;
 import edu.cs544.team5.dto.BarcodeRecordReadDto;
 import edu.cs544.team5.repository.BarcodeRepository;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,11 @@ import javax.validation.Valid;
 
 @Transactional
 @Service
-@RequiredArgsConstructor
 public class BarcodeServiceImpl implements BarcodeService {
-    private final BarcodeRepository barcodeRepository;
-    private final ModelMapper mapper;
+    @Autowired
+    private BarcodeRepository barcodeRepository;
+    @Autowired
+    private ModelMapper mapper;
 
     @Override
     public BarcodeRecordReadDto create(@Valid BarcodeRecordCreationDto barcodeRecordCreationDto) {
@@ -29,5 +30,11 @@ public class BarcodeServiceImpl implements BarcodeService {
     @Override
     public Page<BarcodeRecord> fetchAll(Pageable request) {
         return barcodeRepository.findAll(request);
+    }
+
+
+    @Override
+    public Page<BarcodeRecord> getBarcodeByStudentAndClassSession(int courseId, int studentId, Pageable pageable) {
+        return barcodeRepository.findByStudent_IdAndClassSession_CourseOffering_Id(courseId, studentId, pageable);
     }
 }

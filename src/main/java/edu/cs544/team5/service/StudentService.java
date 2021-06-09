@@ -20,4 +20,5 @@ public interface StudentService {
     public void activeOrDisableStudent(int id, boolean active);
 
     public RegistrationReadDto registryCourse(int id, RegistrationCreationDto dto);
+
 }
