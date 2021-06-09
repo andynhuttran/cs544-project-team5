@@ -8,9 +8,14 @@ import java.util.Set;
 public class PersonReadDto {
 
     private Integer id;
+
     private String firstName;
+
     private String lastName;
-    private String emailAddress;
+
+    private String username;
+
+    private String password;
 
     private Set<RoleReadDto> roleReadDtos;
 }
