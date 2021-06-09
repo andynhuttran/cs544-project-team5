@@ -23,8 +23,6 @@ public class StudentCreationDto {
     private String username;
     @NotNull
     private String password;
-    @Valid
-    private Set<RoleCreationDto> roles;
     @NotNull
     private String studentId;
     @NotNull

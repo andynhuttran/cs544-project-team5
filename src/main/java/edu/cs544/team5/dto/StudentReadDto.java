@@ -12,11 +12,15 @@ import java.util.Collection;
 @Setter
 @Getter
 @ToString
-public class StudentReadDto extends PersonReadDto {
-
+public class StudentReadDto  {
     private String studentId;
 
-    private LocalDate entryDate;
+    private String firstName;
+    private String lastName;
 
+    private String username;
+    private LocalDate entryDate;
     private String barcode;
+
+
 }

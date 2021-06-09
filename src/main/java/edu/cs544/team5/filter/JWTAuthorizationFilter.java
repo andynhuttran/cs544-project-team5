@@ -26,7 +26,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     @Value("${api.secret}")
     private String secret;
     @Value("${api.token-prefix}")
-    private String tokenPrefix;
+    private String tokenPrefix = "Bearer ";
 
     private static final String HEADER_STRING = "Authorization";
 

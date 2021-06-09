@@ -67,67 +67,18 @@ public class StudentServiceImpl implements StudentService {
         modelMapper.addConverter(new CourseOfferingToStudentCourseDtoConvertor());
     }
 
-<<<<<<< HEAD
-    @Override
-=======
-
-    private Student getStudent(int id) {
-        Optional<Student> studentOptional = studentRepository.getStudentById(id);
-        return studentOptional.orElseThrow(() -> new StudentHandleException(HttpStatus.NOT_FOUND, "Can not found student with id = " + id));
-    }
-
-    @Override
-
-    @Transactional(readOnly = true)
-    public StudentReadDto getOneStudent(int id) {
-        Student student = getStudent(id);
-        if (!student.isActive()) {
-            throw new StudentHandleException(HttpStatus.NOT_FOUND, "The student is deactivated");
-        }
-
-        return modelMapper.map(student, StudentReadDto.class);
-    }
-
-    @Override
-    public void activeOrDisableStudent(int id, boolean active) {
-        Student student = getStudent(id);
-
-        if (student.isActive() != active) { //change active state
-            student.setActive(active);
-            studentRepository.save(student);
-        } else {
-            String status = active ? "active" : "deactivated";
-            throw new StudentHandleException(HttpStatus.BAD_REQUEST, "The student have been " + status);
-        }
-    }
-
-    @Override
-    public StudentReadDto findById(Integer id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchRecordFoundException("No student available by id=" + id));
-        return modelMapper.map(student, StudentReadDto.class);
-    }
-
-    @Override
-    public StudentReadDto findByBarcode(String barcode) {
-        Student student = studentRepository.findByBarcode(barcode).orElseThrow(() -> new NoSuchRecordFoundException("No student available by barcode=" + barcode));
-        return modelMapper.map(student, StudentReadDto.class);
-    }
 
 
     @Override
     @Transactional
->>>>>>> main
     public StudentReadDto createStudent(StudentCreationDto dto) {
         //convert dto to entity
         Student studentEntity = modelMapper.map(dto, Student.class);
         studentEntity.setBarcode(BarcodeFactory.getBarcore());
-<<<<<<< HEAD
-=======
 
         studentEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         studentEntity.setUsername(dto.getUsername());
 
->>>>>>> main
         Role role = roleService.fetchOrInsert(RoleType.STUDENT);
         studentEntity.addRole(role);
 
@@ -140,9 +91,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     @Transactional(readOnly = true)
-<<<<<<< HEAD
     public StudentReadDto findById(Integer id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchRecordFoundException("No student available by id=" + id));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentHandleException(HttpStatus.NOT_FOUND, "No student available by id=" + id));
         if (student.isActive() == false) {
             throw new StudentHandleException(HttpStatus.NOT_FOUND, "The student is deactivated");
         }
@@ -156,10 +106,7 @@ public class StudentServiceImpl implements StudentService {
         return modelMapper.map(student, StudentReadDto.class);
     }
 
-
     @Override
-=======
->>>>>>> main
     public List<StudentCourseDto> getPastCourseOffering(int id) {
         List<CourseOffering> courseOfferings = courseOfferingRepository.getPastCourseOffering(id);
         return convertToStudentCourseDto(courseOfferings);
