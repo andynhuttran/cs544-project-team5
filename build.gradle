@@ -39,7 +39,7 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'org.modelmapper:modelmapper:2.4.4'
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 }
 
 test {
