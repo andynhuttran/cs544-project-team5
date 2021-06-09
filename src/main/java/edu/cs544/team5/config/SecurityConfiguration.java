@@ -1,5 +1,6 @@
 package edu.cs544.team5.config;
 
+import edu.cs544.team5.domain.RoleType;
 import edu.cs544.team5.filter.JWTAuthenticationFilter;
 import edu.cs544.team5.filter.JWTAuthorizationFilter;
 import edu.cs544.team5.service.AuthenticationUserDetailService;
@@ -22,11 +23,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .antMatchers("/api/uni/**").hasAnyAuthority("STUDENT", "ADMIN")
-                .antMatchers("/api/uni/**").hasAnyAuthority("STUDENT", "ADMIN")
-                .antMatchers("/api/stu/**").hasAnyAuthority("FACULTY")
-                .antMatchers("/api/admin/**", "/api/v1/students/**").hasAnyAuthority("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/record/**").hasAnyAuthority(RoleType.STUDENT.getName(), RoleType.ADMIN.getName())
+                .antMatchers("/api/uni/**").hasAnyAuthority(RoleType.STUDENT.getName(), RoleType.FACULTY.getName())
+                .antMatchers("/api/stu/**").hasAnyAuthority(RoleType.FACULTY.getName())
+                .antMatchers("/api/v1/students/**", "/api/v1/users/**").hasAnyAuthority(RoleType.ADMIN.getName())
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

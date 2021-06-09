@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("/record")
+@RequestMapping("/api/v1//record")
 @RestController
 @RequiredArgsConstructor
 public class BarcodeController {
@@ -55,7 +55,6 @@ public class BarcodeController {
     @GetMapping
     public ResponseEntity<Page<BarcodeRecord>> fetchAll(Pageable pageable) {
         return ResponseEntity.ok(barcodeService.fetchAll(pageable));
-
     }
 
     @GetMapping(value = "/course/{courseId}/student/{studentId}", params = {"page", "size"})
