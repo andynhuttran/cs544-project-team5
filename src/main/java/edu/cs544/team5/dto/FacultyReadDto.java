@@ -1,8 +1,10 @@
 package edu.cs544.team5.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 public class FacultyReadDto extends PersonReadDto {
     private String title;
 }

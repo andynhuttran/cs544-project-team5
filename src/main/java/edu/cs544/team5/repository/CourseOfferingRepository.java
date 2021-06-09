@@ -5,6 +5,7 @@ import edu.cs544.team5.domain.Faculty;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,7 @@ public interface CourseOfferingRepository extends JpaRepository<CourseOffering, 
     @EntityGraph(attributePaths = {"course", "faculty", "block"})
     @Query("select distinct c from CourseOffering c, Student s inner join s.registrations inner join c.block b " +
             "where b.endDate < current_date and s.id = :id")
-    public List<CourseOffering> getPastCourseOffering(int id);
+    public List<CourseOffering> getPastCourseOffering(@Param("id") int id);
 
 
     @EntityGraph(attributePaths = {"course", "faculty", "block"})
