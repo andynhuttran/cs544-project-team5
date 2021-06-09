@@ -31,10 +31,9 @@ public class CourseController {
     @GetMapping("/")
     public List<CourseReadDto> findAll() {
         List<Course> courseList = courseService.findAll();
-        List<CourseReadDto> courseReadDtos = courseList.stream()
+        return courseList.stream()
                 .map(course -> modelMapper.map(course, CourseReadDto.class))
                 .collect(Collectors.toList());
-        return courseReadDtos;
     }
 
     @GetMapping("/{id}")
@@ -49,8 +48,9 @@ public class CourseController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CourseReadDto> create(CourseCreationDto newCourse) {
-        Course course = courseService.create(modelMapper.map(newCourse, Course.class));
+    public ResponseEntity<CourseReadDto> create(@RequestBody CourseCreationDto newCourseDto) {
+        Course newCourse = modelMapper.map(newCourseDto, Course.class);
+        Course course = courseService.create(newCourse);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
