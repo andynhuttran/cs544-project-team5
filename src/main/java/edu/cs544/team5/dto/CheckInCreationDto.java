@@ -10,5 +10,5 @@ public class CheckInCreationDto {
     private String studentBarcode;
 
     @Valid
-    private Integer classSessionId;
+    private String classSessionId;
 }

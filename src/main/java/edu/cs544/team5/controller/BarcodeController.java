@@ -78,7 +78,7 @@ public class BarcodeController {
             return ResponseEntity.notFound().build();
 
         ClassSessionReadDto classSessionReadDto = modelMapper.map(
-                classSessionService.findById(checkInCreationDto.getClassSessionId()), ClassSessionReadDto.class);
+                classSessionService.findById(Integer.valueOf(checkInCreationDto.getClassSessionId())), ClassSessionReadDto.class);
 
         if (classSessionReadDto == null)
             return ResponseEntity.notFound().build();
