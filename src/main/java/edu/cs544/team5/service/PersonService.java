@@ -12,4 +12,6 @@ public interface PersonService {
     PersonReadDto create(PersonCreationDto p);
 
     Page<Person> fetchAll(Pageable pageable);
+
+    void updateUserPass(PersonCreationDto userReq);
 }

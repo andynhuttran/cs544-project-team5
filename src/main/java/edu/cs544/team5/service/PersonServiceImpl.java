@@ -49,6 +49,15 @@ public class PersonServiceImpl implements PersonService {
         return modelMapper.map(person, PersonReadDto.class);
     }
 
+    public void updateUserPass(PersonCreationDto userReq) {
+        Optional<Person> user = personRepository.findByUsername(userReq.getUsername());
+        Person updated = user.map(p -> {
+            p.setPassword(passwordEncoder.encode(userReq.getPassword()));
+            return p;
+        }).orElseThrow(NoSuchRecordFoundException::new);
+        personRepository.save(updated);
+    }
+
     @Override
     public Page<Person> fetchAll(Pageable pageable) {
         return personRepository.findAll(pageable);

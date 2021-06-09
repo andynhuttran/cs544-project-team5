@@ -43,7 +43,7 @@ public class BarcodeController {
         StudentReadDto studentDTO = studentService.findByBarcode(brDTO.getStudentReadDto().getBarcode());
 
         BarcodeRecordCreationDto barcodeRecord = new BarcodeRecordCreationDto();
-        barcodeRecord.setAttendance(brDTO.getAttendance());
+        barcodeRecord.setAttendance(LocalDateTime.now());
         barcodeRecord.setClassSessionReadDto(classSessionDTO);
         barcodeRecord.setStudentReadDto(studentDTO);
         BarcodeRecordReadDto created = barcodeService.create(barcodeRecord);
