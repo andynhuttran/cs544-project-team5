@@ -42,7 +42,19 @@ public class PersonServiceImpl implements PersonService {
         if (!byUsername.isPresent()) {
             throw new NoSuchRecordFoundException("Not registered user. Please use different username.");
         }
-        return getPersonReadWriteDto(p);
+        Person userModel = byUsername.get();
+        userModel.setPassword(passwordEncoder.encode(p.getPassword()));
+        userModel.getRoles().forEach(r -> userModel.removeRole(r));
+        userModel.setFirstName(p.getFirstName());
+        userModel.setLastName(p.getLastName());
+        p.getRoles().forEach(
+                r -> {
+                    Role role = this.roleService.fetchOrInsert(r.getType());
+                    userModel.addRole(role);
+                }
+        );
+        Person person = personRepository.save(userModel);
+        return modelMapper.map(person, PersonReadDto.class);
     }
 
     @Override
