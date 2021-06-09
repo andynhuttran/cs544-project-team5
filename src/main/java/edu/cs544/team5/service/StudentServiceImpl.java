@@ -2,29 +2,38 @@ package edu.cs544.team5.service;
 
 import edu.cs544.team5.convertor.CourseOfferingToStudentCourseDtoConvertor;
 import edu.cs544.team5.convertor.StudentDTOToEntityConvertor;
-import edu.cs544.team5.domain.*;
+import edu.cs544.team5.domain.CourseOffering;
+import edu.cs544.team5.domain.Role;
+import edu.cs544.team5.domain.RoleType;
+import edu.cs544.team5.domain.Student;
 import edu.cs544.team5.dto.*;
+import edu.cs544.team5.exception.NoSuchRecordFoundException;
 import edu.cs544.team5.exception.StudentHandleException;
 import edu.cs544.team5.repository.CourseOfferingRepository;
 import edu.cs544.team5.repository.RegistrationRepository;
 import edu.cs544.team5.repository.StudentRepository;
 import edu.cs544.team5.util.BarcodeFactory;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.annotation.PostConstruct;
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLNonTransientException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private StudentRepository studentRepository;
@@ -48,7 +57,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-    private Student getStudent(int id){
+    private Student getStudent(int id) {
         Optional<Student> studentOptional = studentRepository.getStudentById(id);
         return studentOptional.orElseThrow(() -> new StudentHandleException(HttpStatus.NOT_FOUND, "Can not found student with id = " + id));
     }
@@ -57,7 +66,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional(readOnly = true)
     public StudentReadDto getOneStudent(int id) {
         Student student = getStudent(id);
-        if (student.isActive() == false) {
+        if (!student.isActive()) {
             throw new StudentHandleException(HttpStatus.NOT_FOUND, "The student is deactivated");
         }
 
@@ -68,23 +77,35 @@ public class StudentServiceImpl implements StudentService {
     public void activeOrDisableStudent(int id, boolean active) {
         Student student = getStudent(id);
 
-        if (student.isActive() != active){ //change active state
+        if (student.isActive() != active) { //change active state
             student.setActive(active);
             studentRepository.save(student);
-        }
-        else {
-            String status = active?"active":"deactivated";
+        } else {
+            String status = active ? "active" : "deactivated";
             throw new StudentHandleException(HttpStatus.BAD_REQUEST, "The student have been " + status);
         }
     }
 
+    @Override
+    public StudentReadDto findById(Integer id) {
+        Student student = studentRepository.findById(id).orElseThrow(() -> new NoSuchRecordFoundException("No student available by id=" + id));
+        return modelMapper.map(student, StudentReadDto.class);
+    }
 
+    @Override
+    public StudentReadDto findByBarcode(String barcode) {
+        Student student = studentRepository.findByBarcode(barcode).orElseThrow(() -> new NoSuchRecordFoundException("No student available by barcode=" + barcode));
+        return modelMapper.map(student, StudentReadDto.class);
+    }
 
     @Override
     @Transactional
     public StudentReadDto createStudent(StudentCreationDto dto) {
         Student studentEntity = modelMapper.map(dto, Student.class);
         studentEntity.setBarcode(BarcodeFactory.getBarcore());
+
+        studentEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
+        studentEntity.setUsername(dto.getUsername());
 
         Role role = roleService.fetchOrInsert(RoleType.STUDENT);
         studentEntity.addRole(role);
@@ -127,7 +148,7 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     public RegistrationReadDto registryCourse(int studentId, RegistrationCreationDto dto) {
         Student student = getStudent(studentId);
-        if (student.isActive() == false) {
+        if (!student.isActive()) {
             throw new StudentHandleException(HttpStatus.NOT_FOUND, "The student is deactivated");
         }
 

@@ -1,14 +1,15 @@
 package edu.cs544.team5.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PersonCreationDto {
     @NotNull
     private String firstName;
