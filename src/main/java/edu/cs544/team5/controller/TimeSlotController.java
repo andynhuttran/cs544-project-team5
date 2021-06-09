@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ public class TimeSlotController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<TimeslotReadDto> create(@RequestBody TimeslotCreationDto newTimeslotDto) {
+    public ResponseEntity<TimeslotReadDto> create(@Valid @RequestBody TimeslotCreationDto newTimeslotDto) {
 
         if(newTimeslotDto.getEndTime().compareTo(newTimeslotDto.getStartTime()) <= 0)
             return ResponseEntity.badRequest().build();
@@ -64,7 +65,7 @@ public class TimeSlotController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TimeslotReadDto> update(@RequestBody Timeslot timeslot, @PathVariable int id) {
+    public ResponseEntity<TimeslotReadDto> update(@Valid @RequestBody Timeslot timeslot, @PathVariable int id) {
         timeslot.setId(id);
         if(timeslot.getEndTime().compareTo(timeslot.getStartTime()) <= 0)
             return ResponseEntity.badRequest().build();

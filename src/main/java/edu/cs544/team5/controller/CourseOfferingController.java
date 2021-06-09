@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,7 +74,7 @@ public class CourseOfferingController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CourseOfferingReadDto> create(@RequestBody CourseOfferingCreationDto newCourseOffering) {
+    public ResponseEntity<CourseOfferingReadDto> create(@Valid @RequestBody CourseOfferingCreationDto newCourseOffering) {
         CourseOffering courseOffering = modelMapper.map(newCourseOffering, CourseOffering.class);
 
         Course course = courseService.findById(newCourseOffering.getCourseId());
@@ -105,7 +106,7 @@ public class CourseOfferingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseOfferingReadDto> update(@RequestBody CourseOfferingCreationDto courseOfferingDto, @PathVariable int id) {
+    public ResponseEntity<CourseOfferingReadDto> update(@Valid @RequestBody CourseOfferingCreationDto courseOfferingDto, @PathVariable int id) {
 
         Course course = courseService.findById(courseOfferingDto.getCourseId());
         if (course == null)
