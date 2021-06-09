@@ -12,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +54,7 @@ public class BarcodeController {
     @GetMapping
     public ResponseEntity<Page<BarcodeRecord>> fetchAll(Pageable pageable) {
         return ResponseEntity.ok(barcodeService.fetchAll(pageable));
+
     }
 
     @GetMapping(value = "/course/{courseId}/student/{studentId}", params = { "page", "size" })
@@ -67,5 +66,6 @@ public class BarcodeController {
         List<BarcodeRecordReadDto> barcodeRecordReadDtos = barcodeRecordList.stream()
                 .map(br -> modelMapper.map(br, BarcodeRecordReadDto.class)).collect(Collectors.toList());
         return ResponseEntity.ok(barcodeRecordReadDtos);
+
     }
 }
