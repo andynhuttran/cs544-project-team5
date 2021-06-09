@@ -16,7 +16,7 @@ public class Course {
 
     private String name;
 
-    @Column(length = 5)
+    @Column(length = 5, unique = true)
     private String abbreviation;
 
     @Column(table = "courseDescription", length = 4000)

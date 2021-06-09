@@ -12,10 +12,10 @@ public class TimeslotCreationDto {
     private String timeslotId;
     @NotNull
     private String title;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalTime startTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     @NotNull
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalTime endTime;
 }
