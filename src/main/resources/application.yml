@@ -4,7 +4,11 @@ spring:
   application:
     name: team5-project
   datasource:
-    url: jdbc:postgresql://localhost:5432/team5
+    username: root
+    password: root
+    url: jdbc:mysql://localhost/team5?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     show-sql: true
     hibernate:
@@ -12,10 +16,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl
       ddl-auto: create
-api:
-  secret: noop
-  expiration-time: 150000
-  token-prefix: Bearer
-  signup-url: /users
-
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
